@@ -1,2 +1,2 @@
-# microservicePerson-CRUD
-person details CRUD operations
+# microService-crud
+crud microservice
