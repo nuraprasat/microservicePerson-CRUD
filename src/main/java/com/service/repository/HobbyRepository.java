@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.service.model.Hobby;
 
-public interface BankDetailsRepository extends JpaRepository<Hobby, Integer> {
+public interface HobbyRepository extends JpaRepository<Hobby, Integer> {
+
+	public Hobby findByHobbyName(String s);
 
 }

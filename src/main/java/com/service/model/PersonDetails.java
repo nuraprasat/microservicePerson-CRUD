@@ -1,6 +1,6 @@
 package com.service.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,19 +10,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name="person")
+@NoArgsConstructor
+@Table(name = "person")
 public class PersonDetails {
-	
-	@Id 
+
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "person_id")
 	private int personId;
@@ -30,9 +31,16 @@ public class PersonDetails {
 	private String lastName;
 	private int age;
 	private String favouriteColour;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@JoinColumn(name = "person_id")
-	private List<Hobby> hobby;
+
+	@ManyToMany(cascade = { CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@JoinTable(name = "person_hobby", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "hobby_id"))
+	private Set<Hobby> hobbys;
+
+	public PersonDetails(String firstName, String lastName, int age, String favouriteColour, Set<Hobby> hobbys) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.age = age;
+		this.favouriteColour = favouriteColour;
+		this.hobbys = hobbys;
+	}
 }

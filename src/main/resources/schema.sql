@@ -9,10 +9,16 @@ CREATE TABLE person (
 );
 
 CREATE TABLE hobby (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    hobby_id INTEGER NOT NULL AUTO_INCREMENT,
     hobby_name VARCHAR(128),
-    person_id INTEGER ,
-    foreign key (person_id) references person(person_id),
     
-    PRIMARY KEY (id)
+    PRIMARY KEY (hobby_id)
+);
+
+CREATE TABLE PERSON_HOBBY (
+	person_id INTEGER ,
+	foreign key (person_id) references person(person_id),
+	
+	hobby_id INTEGER ,
+	foreign key (hobby_id) references hobby(hobby_id)
 );
