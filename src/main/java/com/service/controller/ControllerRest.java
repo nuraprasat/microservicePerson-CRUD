@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.service.domain.Person;
+import com.service.exception.InternalServerError;
 import com.service.exception.PersonNotFoundException;
 import com.service.model.ErrorModel;
 import com.service.model.PersonDetails;
@@ -52,12 +53,12 @@ public class ControllerRest {
 	}
 
 	@PostMapping("/createPerson")
-	public ResponseEntity<PersonDetails> createPerson(@RequestBody Person person) throws PersonNotFoundException {
+	public ResponseEntity<PersonDetails> createPerson(@RequestBody Person person) throws InternalServerError {
 		PersonDetails savedPerson = personService.save(person);
 
 		if (savedPerson == null) {
-			ErrorModel em = new ErrorModel(HttpStatus.CONFLICT.value(), "person id already exists");
-			throw new PersonNotFoundException(em);
+			ErrorModel em = new ErrorModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+			throw new InternalServerError(em);
 		}
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
@@ -65,7 +66,6 @@ public class ControllerRest {
 
 	@PutMapping("/updatePerson/{id}")
 	public ResponseEntity<Object> updatePerson(@RequestBody Person person, @PathVariable @Validated @Min(1) int id) {
-		personService.updatePerson(person, id);
-		return ResponseEntity.noContent().build();
+		return personService.updatePerson(person, id);
 	}
 }

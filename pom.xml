@@ -7,7 +7,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>microServicePersonCRUD</name>
 	<description>Demo project for Spring Boot</description>
-
+	<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <relativePath /> <!-- lookup parent from repository -->
+    </parent>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -16,18 +21,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>
-			<version>2.0.4.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>2.0.4.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.0.4.RELEASE</version>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>2.1.8.RELEASE</version>
+        </dependency>
 
 		<!--lombak jar is not needed at run time -->
 		<dependency>
