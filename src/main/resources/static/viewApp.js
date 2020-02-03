@@ -10,7 +10,7 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
                     $scope.saveItem = function(id,person) {
            					$http({
 							  method: 'PUT',
-							  url: 'http://localhost:8080/updatePerson/1'+id,
+							  url: 'http://localhost:8080/updatePerson/'+id,
 							  data: person
 							})
 							.then(function (success) {
@@ -60,6 +60,22 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
   });
 
     app.controller('ModalContentCtrl', function($scope, $uibModalInstance) {
+    
+    $scope.saveDetail = function () {
+    		console.log($scope);
+			$http({
+			  method: 'POST',
+			  url: 'http://localhost:8080/createPerson/',
+			  data: $scope
+			})
+			.then(function (success) {
+			  alert('update completed!');
+			}, function (error) {
+			  document.getElementById("errorSpan").innerHTML="person not found";
+			});
+                              
+            console.log($scope.firstName);
+        }
 
   $scope.ok = function(){
     $uibModalInstance.close("Ok");

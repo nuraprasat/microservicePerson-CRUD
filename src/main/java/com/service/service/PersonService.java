@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.service.domain.Person;
 import com.service.model.Hobby;
@@ -88,13 +87,6 @@ public class PersonService {
 				ho.setHobbyName(s);
 				hobbySet.add(ho);
 			}
-		}
-		if (CollectionUtils.isEmpty(hobbySet)) {
-			hobbySet = person.getHobby().stream().map(s -> {
-				Hobby ho = new Hobby();
-				ho.setHobbyName(s);
-				return ho;
-			}).collect(Collectors.toSet());
 		}
 
 		return hobbySet;

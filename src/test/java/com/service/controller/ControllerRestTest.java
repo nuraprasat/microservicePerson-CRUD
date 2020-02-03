@@ -127,7 +127,7 @@ public class ControllerRestTest {
 		this.mockMvc.perform(put("/updatePerson/{id}",1)
 														.contentType(APPLICATION_JSON_UTF8)
 														.content(requestJson))
-														.andExpect(status().is(204))
+														.andExpect(status().is(200))
 														.andReturn();
 		Mockito.verify(personService, Mockito.times(1)).updatePerson(Mockito.any(Person.class), Mockito.anyInt());
 	}

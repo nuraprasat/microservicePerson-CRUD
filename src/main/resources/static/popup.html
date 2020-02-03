@@ -4,7 +4,7 @@
 <div class="modal-body">
  	<div>
 
-    <form ng-submit="Display()">
+    <form ng-submit="saveDetail()">
     	<label for="firstName">First Name: </label><br />
         <input id="firstName" type="text"  ng-model="firstName"><br>
         <label for="lastName">Last Name: </label><br />
@@ -15,10 +15,8 @@
         <input id="favouriteColour" type="text"  ng-model="colour"><br>
         <label for="hobby">Hobby: </label><br />
         <textarea id="hobby" ng-model="hobby" placeholder="Enter hobby's separated by commas" ng-model="hobby"/><br />
+    <button class="btn btn-primary" type="submit" value="Submit">create</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </form>
 </div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">create</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>
