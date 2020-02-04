@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: none
+  datasource:
+    initialization-mode: always
+  h2:
+    console:
+      enabled: true
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8080/validateUser
