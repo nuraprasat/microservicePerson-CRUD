@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.service.domain.Person;
+import com.service.exception.PersonNotFoundException;
 import com.service.model.Hobby;
 import com.service.model.PersonDetails;
 import com.service.repository.HobbyRepository;
@@ -68,8 +69,17 @@ public class PersonServiceTest {
 	
 	@Test
 	public void verifyDeleteByID() throws Exception {
+		Mockito.when(personRepository.findById(1)).thenReturn(Optional.ofNullable(getListOfPersonDetails().get(0)));
 		personService.deleteById(1);
 		Mockito.verify(personRepository, Mockito.times(1)).deleteById(1);
+	}
+	
+	@Test(expected = PersonNotFoundException.class)
+	public void verifyDeleteByIDThrowsException() throws Exception {
+		PersonDetails personDetails = null;
+		Mockito.when(personRepository.findById(1)).thenReturn(Optional.ofNullable(personDetails));
+		personService.deleteById(1);
+		Mockito.verify(personRepository, Mockito.times(1)).deleteById(0);
 	}
 	
 	@Test

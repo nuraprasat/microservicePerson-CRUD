@@ -8,10 +8,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.service.domain.Person;
+import com.service.exception.PersonNotFoundException;
+import com.service.model.ErrorModel;
 import com.service.model.Hobby;
 import com.service.model.PersonDetails;
 import com.service.repository.HobbyRepository;
@@ -45,7 +48,12 @@ public class PersonService {
 		return person;
 	}
 
-	public void deleteById(Integer id) {
+	public void deleteById(Integer id) throws PersonNotFoundException {
+		Optional<PersonDetails> personDetails = personRepository.findById(id);
+		if (!personDetails.isPresent()) {
+			ErrorModel em = new ErrorModel(HttpStatus.NOT_FOUND.value(), "person id-"+id+" not found");
+			throw new PersonNotFoundException(em);
+		}
 		personRepository.deleteById(id);
 	}
 

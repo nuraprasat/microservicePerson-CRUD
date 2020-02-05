@@ -50,7 +50,7 @@ public class ControllerRest {
 	}
 
 	@DeleteMapping("/deletePerson/{id}")
-	public void deletePerson(@Validated @PathVariable @Min(1) int id) {
+	public void deletePerson(@Validated @PathVariable @Min(1) int id) throws PersonNotFoundException {
 		personService.deleteById(id);
 	}
 
