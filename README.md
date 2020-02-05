@@ -10,10 +10,10 @@ java -jar target/microServicePersonCRUD-0.0.1-SNAPSHOT.jar
 UI Screen - 
 To start the UI, Hit the below URL in the browser with internet connection
 http://localhost:8080/view.html
-![](images_readme/UI_index)
+![](/images_readme/UI_index)
 To update Values, We can directly select the cell to edit and click update to update the values.
-![](images_readme/UI_update)
-![](images_readme/UI_update2)
+![](/images_readme/UI_update)
+![](/images_readme/UI_update2)
 To Delete values, Press delete button on row which needs to be deleted.
 To add new values, Click create button and insert the new values.
 ![](images_readme/UI_create)
