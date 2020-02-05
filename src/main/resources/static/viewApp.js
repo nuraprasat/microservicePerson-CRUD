@@ -2,59 +2,59 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
                  
                    app.controller('MyCtrl', function($scope, $http, $uibModal) {
                    
+                	   var headers = '';
 
+                	   var data = "grant_type=client_credentials";
 
-        var url = 'http://localhost:8080/oauth/token';
+                	   var xhr = new XMLHttpRequest();
+                	   xhr.withCredentials = true;
 
-        var username = 'myclient'; // Username of PowerBI "pro" account - stored in config
-        var password = 'secret'; // Password of PowerBI "pro" account - stored in config
+                	   xhr.addEventListener("readystatechange", function() {
+                	     if(this.readyState === 4) {
+                	    	 console.log(this.responseText);
+                	    	 headers = { 
+                	    			 headers : {
+                	    				 'Authorization': 'Bearer '+JSON.parse(this.responseText).access_token
+                	    			 	}
+                       	    		 }
+                	    	 $http.get('http://localhost:8080/api/getAllPersons', headers).
+                             success(function(data) {
+                            	data.forEach(obj => {
+                            		obj.hobby = obj.hobby ? obj.hobby.join() : '';
+                            	});
+                               $scope.users = data;
+                             });
+                	     }
+                	   });
 
-    var headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic bXljbGllbnQ6c2VjcmV0'
-        };
+                	   xhr.open("POST", "http://localhost:8080/oauth/token");
+                	   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                	   xhr.setRequestHeader("Authorization", "Basic bXljbGllbnQ6c2VjcmV0");
 
-        var formData = {
-            grant_type: 'client_credentials',
-        };
-
-       $http({
-			  method: 'POST',
-			  url: url,
-			  data: formData,
-			  headers: headers
-			})
-			.then(function (success) {
-			  alert('update completed!');
-			  document.location.reload();
-			}, function (error) {
-			  document.getElementById("errorSpan").innerHTML="person not found";
-			});
-
-        
+                	   xhr.send(data);
  
                      document.getElementById("errorSpan").innerHTML = "";
-                     $http.get('http://localhost:8080/getAllPersons').
-                     success(function(data) {
-                       $scope.users = data;
-                     });
+                     
                        
                     $scope.updateItem = function(id,person) {
+                    	init($scope, $http);
+                    	person.hobby = person.hobby ? person.hobby.split(',') : [];
            					$http({
 							  method: 'PUT',
-							  url: 'http://localhost:8080/updatePerson/'+id,
-							  data: person
+							  url: 'http://localhost:8080/api/updatePerson/'+id,
+							  data: person,
+							  headers: headers
 							})
 							.then(function (success) {
-							  alert('update completed!');
-							  document.location.reload();
+								person.hobby = person.hobby ? person.hobby.join() : '';
 							}, function (error) {
-							  document.getElementById("errorSpan").innerHTML="person not found";
+							  alert("Internal server error - please try after sometime");
 							});
                               
                      }
-                     $scope.deleteItem = function(name,surname,address) {
-                              $http.post('http://localhost:8080/rest-angular/rest/simple',{name: name,surname: surname,address: address}).
+                     $scope.deleteItem = function(id) {
+                    	 init($scope, $http);
+                              $http.delete('http://localhost:8080/api/deletePerson/'+id,headers).
                                success(function(data) {
                                   alert('person deleted!');
                                   document.location.reload();
@@ -77,39 +77,38 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
                                { field:'', displayName: 'Update', enableCellEdit: false,
                                   cellTemplate: '<button id="editBtn" type="button"  ng-click="updateItem(row.entity.person_id,row.entity)" >Update</button>'},
                                { field:'', displayName: 'Delete', enableCellEdit: false, 
-                                  cellTemplate: '<button id="editBtn" type="button"  ng-click="deleteItem(row.entity,row.entity.name, row.entity.surname,row.entity.address)" >Delete</button>'}
+                                  cellTemplate: '<button id="editBtn" type="button"  ng-click="deleteItem(row.entity.person_id)" >Delete</button>'}
                               ]
                                
                            };
                            
                       $scope.open = function() {
-    var modalInstance =  $uibModal.open({
-      templateUrl: "popup.html",
-      controller: "ModalContentCtrl",
-      size: '',
-    });
-  }
-  
-  
-                      
-                     
+					    var modalInstance =  $uibModal.open({
+					      templateUrl: "popup.html",
+					      controller: "ModalContentCtrl",
+					      size: '',
+					    });
+					  }              
   });
 
     app.controller('ModalContentCtrl', function($scope, $http, $uibModalInstance) {
     $scope.saveDetail = function () {
-    var hobbys = $scope.hobby.split(',');
-    var person = {first_name:$scope.firstName, last_name:$scope.lastName, age: $scope.age, favourite_colour: $scope.colour, hobby: hobbys}
+    	init($scope, $http);
+    	var headers;
+    	var hobbys = $scope.hobby.split(',');
+    	var person = {first_name:$scope.firstName, last_name:$scope.lastName, age: $scope.age, favourite_colour: $scope.colour, hobby: hobbys}
 			$http({
 			  method: 'POST',
-			  url: 'http://localhost:8080/createPerson/',
-			  data: person
+			  url: 'http://localhost:8080/api/createPerson/',
+			  data: person,
+			  headers: $scope.headers
 			})
 			.then(function (success) {
 			  alert('update completed!');
 			  $uibModalInstance.dismiss();
 			  document.location.reload();
 			}, function (error) {
-			  document.getElementById("errorSpan").innerHTML="person not found";
+				alert("Internal server error - please try after sometime");
 			});
                               
         }
@@ -119,4 +118,29 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
   } 
   
 });
+    
+    function init($scope, $http) {
+    	var data = "grant_type=client_credentials";
+
+    	var xhr = new XMLHttpRequest();
+    	xhr.withCredentials = true;
+
+	   xhr.addEventListener("readystatechange", function() {
+	     if(this.readyState === 4) {
+	    	 $scope.headers = { 
+	    			 headers : {
+	    				 'Authorization': 'Bearer '+JSON.parse(this.responseText).access_token
+	    			 	}
+       	    		 }
+	     } else {
+	    	 alert("Internal server error - please try after sometime");
+	     }
+	   });
+
+	   xhr.open("POST", "http://localhost:8080/oauth/token");
+	   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	   xhr.setRequestHeader("Authorization", "Basic bXljbGllbnQ6c2VjcmV0");
+
+	   xhr.send(data);
+    }    
                    

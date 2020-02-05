@@ -25,7 +25,7 @@ import com.service.model.PersonDetails;
 import com.service.service.PersonService;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class ControllerRest {
 
 	@Autowired
