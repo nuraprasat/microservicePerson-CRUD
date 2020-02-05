@@ -3,13 +3,13 @@
 # Person CRUD
 
 ## Getting Started
-To run a project, First clone it
+To run a project, First clone it.
 ```
 git clone https://github.com/nuraprasat/productManagement.git
 ```
 
 ### Installing
-After cloning just give the below command to run the service inside the project
+After cloning just give the below command, Inside the project to run the service.
 ```
 java -jar target/microServicePersonCRUD-0.0.1-SNAPSHOT.jar
 ```
@@ -17,7 +17,7 @@ java -jar target/microServicePersonCRUD-0.0.1-SNAPSHOT.jar
 ## Running
 
 ### UI Screen - 
-To start the UI, Hit the below URL in the browser with internet connection
+To start the UI, Hit the below URL in the browser with internet connection(Chrome)
 ```
 http://localhost:8080/view.html
 ```
@@ -31,7 +31,7 @@ To add new values, Click create button and insert the new values.
 
 ### Post Man - 
 
-To generate the oauth token, Hit the below URL with appid and secret, Also set the grant_type as client_credentials in the header
+To generate an oauth token follow the below steps,
 ```
 POST : http://localhost:8080/oauth/token
 Authorization : username and password
@@ -41,7 +41,7 @@ grant_type:client_credentials
 ![](/images_readme/oauth_token.png)
 ![](/images_readme/oauth_token2.png)
 
-To get all the person records, Hit the below URL with the token in the header as Authorization - Bearer token
+To get all person records,
 ```
 GET : http://localhost:8080/api/getAllPersons
 Headers : Authorization - Bearer token
