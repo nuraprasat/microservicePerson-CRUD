@@ -16,7 +16,7 @@ java -jar target/microServicePersonCRUD-0.0.1-SNAPSHOT.jar
 
 ## Running
 
-###UI Screen - 
+### UI Screen - 
 To start the UI, Hit the below URL in the browser with internet connection
 ```
 http://localhost:8080/view.html
@@ -29,7 +29,7 @@ To Delete values, Press delete button on row which needs to be deleted.
 To add new values, Click create button and insert the new values.
 ![](/images_readme/UI_create.png)
 
-###Post Man - 
+### Post Man - 
 
 To generate the oauth token, Hit the below URL with appid and secret, Also set the grant_type as client_credentials in the header
 ```
