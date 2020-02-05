@@ -55,7 +55,7 @@ public class ControllerRest {
 	}
 
 	@PostMapping("/createPerson")
-	public ResponseEntity<PersonDetails> createPerson(@RequestBody Person person) throws InternalServerError {
+	public ResponseEntity<Object> createPerson(@RequestBody Person person) throws InternalServerError {
 		PersonDetails savedPerson = personService.save(person);
 
 		if (savedPerson == null) {

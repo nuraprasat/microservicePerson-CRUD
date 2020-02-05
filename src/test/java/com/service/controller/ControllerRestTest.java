@@ -59,7 +59,7 @@ public class ControllerRestTest {
 	@Test
 	public void AllPersonShouldBeReturnedFromService() throws Exception {
 		Mockito.when(personService.findAllPerson()).thenReturn(getListOfPerson());
-		MvcResult result = this.mockMvc.perform(get("/getAllPersons").accept(MediaType.APPLICATION_JSON_VALUE))
+		MvcResult result = this.mockMvc.perform(get("/api/getAllPersons").accept(MediaType.APPLICATION_JSON_VALUE))
 														.andExpect(status().is(200))
 														.andReturn();
 		ObjectMapper mapper = new ObjectMapper();
@@ -71,7 +71,7 @@ public class ControllerRestTest {
 	@Test
 	public void personShouldReturnedbasedOnId() throws Exception {
 		Mockito.when(personService.findById(Mockito.anyInt())).thenReturn(getListOfPerson().get(0));
-		MvcResult result = this.mockMvc.perform(get("/getPersonDetails/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
+		MvcResult result = this.mockMvc.perform(get("/api/getPersonDetails/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
 														.andExpect(status().is(200))
 														.andReturn();
 		ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +84,7 @@ public class ControllerRestTest {
 	public void personNotReturnedbasedOnId() throws Exception {
 		Person person = null;
 		Mockito.when(personService.findById(Mockito.anyInt())).thenReturn(person);
-		this.mockMvc.perform(get("/getPersonDetails/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
+		this.mockMvc.perform(get("/api/getPersonDetails/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
 														.andExpect(status().is(200))
 														.andReturn();
 	}
@@ -92,7 +92,7 @@ public class ControllerRestTest {
 	@Test
 	public void checkDeletePerson() throws Exception {
 		Mockito.doNothing().when(personService).deleteById(Mockito.anyInt());
-		this.mockMvc.perform(delete("/deletePerson/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
+		this.mockMvc.perform(delete("/api/deletePerson/{id}",1).accept(MediaType.APPLICATION_JSON_VALUE))
 														.andExpect(status().is(200))
 														.andReturn();
 	}
@@ -102,7 +102,7 @@ public class ControllerRestTest {
 		
 		String requestJson=ow.writeValueAsString(getListOfPerson().get(0));
 		Mockito.when(personService.save(Mockito.any(Person.class))).thenReturn(null);
-		this.mockMvc.perform(post("/createPerson")
+		this.mockMvc.perform(post("/api/createPerson")
 														.contentType(APPLICATION_JSON_UTF8)
 														.content(requestJson))
 														.andExpect(status().is(500))
@@ -113,7 +113,7 @@ public class ControllerRestTest {
 	public void checkPostCreatePersonWorking() throws Exception {
 		String requestJson=ow.writeValueAsString(getListOfPerson().get(0));
 		Mockito.when(personService.save(Mockito.any(Person.class))).thenReturn(getListOfPersonDetails().get(0));
-		this.mockMvc.perform(post("/createPerson")
+		this.mockMvc.perform(post("/api/createPerson")
 														.contentType(APPLICATION_JSON_UTF8)
 														.content(requestJson))
 														.andExpect(status().is(201))
@@ -124,7 +124,7 @@ public class ControllerRestTest {
 	public void checkPutUpdatePersonWorking() throws Exception {
 		String requestJson=ow.writeValueAsString(getListOfPerson().get(0));
 		Mockito.when(personService.updatePerson(Mockito.any(Person.class), Mockito.anyInt())).thenReturn(null);
-		this.mockMvc.perform(put("/updatePerson/{id}",1)
+		this.mockMvc.perform(put("/api/updatePerson/{id}",1)
 														.contentType(APPLICATION_JSON_UTF8)
 														.content(requestJson))
 														.andExpect(status().is(200))

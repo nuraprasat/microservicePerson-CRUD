@@ -11,7 +11,6 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
 
                 	   xhr.addEventListener("readystatechange", function() {
                 	     if(this.readyState === 4) {
-                	    	 console.log(this.responseText);
                 	    	 headers = { 
                 	    			 headers : {
                 	    				 'Authorization': 'Bearer '+JSON.parse(this.responseText).access_token
@@ -48,6 +47,7 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
 							.then(function (success) {
 								person.hobby = person.hobby ? person.hobby.join() : '';
 							}, function (error) {
+								person.hobby = person.hobby ? person.hobby.join() : '';
 							  alert("Internal server error - please try after sometime");
 							});
                               
@@ -71,7 +71,7 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
                              columnDefs: [
                                { field: 'first_name', displayName: 'first name', enableCellEdit: true } ,
                                { field: 'last_name', displayName: 'last name', enableCellEdit: true} ,
-                               { field: 'age', displayName: 'age', enableCellEdit: true} ,
+                               { field: 'age', displayName: 'age', enableCellEdit: true, cellFilter: 'number'} ,
                                { field: 'favourite_colour', displayName: 'favourite colour', enableCellEdit: true} ,
                                { field: 'hobby', displayName: 'hobby', enableCellEdit: true} ,
                                { field:'', displayName: 'Update', enableCellEdit: false,
@@ -132,7 +132,7 @@ var app = angular.module('myApp', ['ngGrid','ui.bootstrap']);
 	    				 'Authorization': 'Bearer '+JSON.parse(this.responseText).access_token
 	    			 	}
        	    		 }
-	     } else {
+	     } else if(this.status === 500) {
 	    	 alert("Internal server error - please try after sometime");
 	     }
 	   });
